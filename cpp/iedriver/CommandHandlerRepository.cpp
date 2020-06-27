@@ -70,6 +70,7 @@
 #include "CommandHandlers/ScreenshotCommandHandler.h"
 #include "CommandHandlers/ScreenshotElementCommandHandler.h"
 #include "CommandHandlers/SendKeysCommandHandler.h"
+#include "CommandHandlers/SaveFileCommandHandler.h"
 #include "CommandHandlers/SendKeysToAlertCommandHandler.h"
 #include "CommandHandlers/SetAlertCredentialsCommandHandler.h"
 #include "CommandHandlers/SetTimeoutsCommandHandler.h"
@@ -148,6 +149,7 @@ void CommandHandlerRepository::PopulateCommandHandlers() {
   this->command_handlers_[webdriver::CommandType::ClickElement] = CommandHandlerHandle(new ClickElementCommandHandler);
   this->command_handlers_[webdriver::CommandType::ClearElement] = CommandHandlerHandle(new ClearElementCommandHandler);
   this->command_handlers_[webdriver::CommandType::SendKeysToElement] = CommandHandlerHandle(new SendKeysCommandHandler);
+  this->command_handlers_[webdriver::CommandType::SaveFile] = CommandHandlerHandle(new SaveFileCommandHandler);
   this->command_handlers_[webdriver::CommandType::GetPageSource] = CommandHandlerHandle(new GetPageSourceCommandHandler);
   this->command_handlers_[webdriver::CommandType::ExecuteScript] = CommandHandlerHandle(new ExecuteScriptCommandHandler);
   this->command_handlers_[webdriver::CommandType::ExecuteAsyncScript] = CommandHandlerHandle(new ExecuteAsyncScriptCommandHandler);

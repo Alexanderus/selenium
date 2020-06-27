@@ -64,6 +64,7 @@ namespace CommandType {
   const std::string ClickElement = "click";
   const std::string ClearElement = "clear";
   const std::string SendKeysToElement = "sendKeys";
+  const std::string SaveFile = "saveFile";
   const std::string GetPageSource = "getPageSource";
   const std::string ExecuteScript = "executeScript";
   const std::string ExecuteAsyncScript = "executeAsyncScript";

@@ -771,6 +771,7 @@ void Server::PopulateCommandRepository() {
   this->AddCommand("/session/:sessionid/element/:id/click", "POST",  webdriver::CommandType::ClickElement);
   this->AddCommand("/session/:sessionid/element/:id/clear", "POST",  webdriver::CommandType::ClearElement);
   this->AddCommand("/session/:sessionid/element/:id/value", "POST",  webdriver::CommandType::SendKeysToElement);
+  this->AddCommand("/session/:sessionid/file", "POST",  webdriver::CommandType::SaveFile);
   this->AddCommand("/session/:sessionid/source", "GET",  webdriver::CommandType::GetPageSource);
   this->AddCommand("/session/:sessionid/execute/sync", "POST",  webdriver::CommandType::ExecuteScript);
   this->AddCommand("/session/:sessionid/execute/async", "POST",  webdriver::CommandType::ExecuteAsyncScript);
