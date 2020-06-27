@@ -39,6 +39,7 @@
 #define IELAUNCHURL_FUNCTION_NAME "IELaunchURL"
 
 #define IE_FRAME_WINDOW_CLASS "IEFrame"
+#define SAVE_FILE_NOTIFICATION_NAME_CLASS "DirectUIHWND"
 #define SHELL_DOCOBJECT_VIEW_WINDOW_CLASS "Shell DocObject View"
 #define IE_SERVER_CHILD_WINDOW_CLASS "Internet Explorer_Server"
 #define ANDIE_FRAME_WINDOW_CLASS "Chrome_WidgetWin_1"
@@ -1092,6 +1093,38 @@ BOOL CALLBACK BrowserFactory::FindEdgeChildWindowForProcess(HWND hwnd, LPARAM ar
   return TRUE;
 }
 
+BOOL CALLBACK FindSaveFileWindow(HWND hwnd, LPARAM arg) {
+  std::vector<char> window_class_name(34);
+  GetClassNameA(hwnd, &window_class_name[0], 34);
+  if (strcmp(SAVE_FILE_NOTIFICATION_NAME_CLASS,
+    &window_class_name[0]) == 0) {
+    SetFocus(hwnd);
+
+    INPUT input;
+    input.type = INPUT_KEYBOARD;
+    input.ki.wScan = 0;
+    input.ki.time = 0;
+    input.ki.dwExtraInfo = 0;
+
+    input.ki.wVk = VK_RMENU;
+    input.ki.dwFlags = 0; 
+    SendInput(1, &input, sizeof(INPUT));
+
+    input.ki.wVk = 'S';
+    input.ki.dwFlags = 0;
+    SendInput(1, &input, sizeof(INPUT));
+
+    input.ki.wVk = 'S';
+    input.ki.dwFlags = KEYEVENTF_KEYUP;
+    SendInput(1, &input, sizeof(INPUT));
+
+    input.ki.wVk = VK_RMENU;
+    input.ki.dwFlags = KEYEVENTF_KEYUP;
+    SendInput(1, &input, sizeof(INPUT));
+  }
+  return TRUE;
+}
+
 BOOL CALLBACK BrowserFactory::FindDialogWindowForProcess(HWND hwnd, LPARAM arg) {
   ProcessWindowInfo* process_win_info = reinterpret_cast<ProcessWindowInfo*>(arg);
 
@@ -1104,8 +1137,12 @@ BOOL CALLBACK BrowserFactory::FindDialogWindowForProcess(HWND hwnd, LPARAM arg) 
     // No match found. Skip
     return TRUE;
   }
-  
-  if (strcmp(ALERT_WINDOW_CLASS, name) != 0 && 
+
+  if (strcmp(IE_FRAME_WINDOW_CLASS, name) == 0) {
+    EnumChildWindows(hwnd, FindSaveFileWindow, NULL);
+  }
+
+  if (strcmp(ALERT_WINDOW_CLASS, name) != 0 &&
       strcmp(HTML_DIALOG_WINDOW_CLASS, name) != 0 &&
       strcmp(SECURITY_DIALOG_WINDOW_CLASS, name) != 0) {
     return TRUE;
